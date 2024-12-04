@@ -49,21 +49,26 @@ contactField.addEventListener('change', () => {
 })
 
 imageField.addEventListener('change',() => {
-    var selectedFile = document.getElementById('picture').files[0];
-    var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    var selectedFile = imageField.files[0];
+    var allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
 
     if (!allowedTypes.includes(selectedFile.type)) {
        alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
-       document.getElementById('picture').value = '';
+       imageField.value = '';
     }
 })
 
 
 
 formSubmission.addEventListener('submit', async (event) => {
-    event.preventDefault();
 
-        
+    event.preventDefault();
+    
+    if(!formSubmission.checkValidity()) {
+        alert("Please fill in all required fields");
+        return;
+    }
+
     const fname = fnameField.value.trim();
     const lname = lnameField.value.trim();
     const name = nameField.value;
@@ -85,13 +90,16 @@ formSubmission.addEventListener('submit', async (event) => {
 
 
     setTimeout(() => {
-        alert("info is saved");
+        alert("Your Information is Recorded");
         displayForm(profile);
         formSubmission.reset();
         submitBtn.classList.remove("d-none");
         loadingBtn.classList.add("d-none");
     },5000);
-});
+
+});  
+
+
 
 function validateEmail(email) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -110,7 +118,6 @@ function displayForm(profile) {
     }
     console.log(dataDisplayed);
 }
-
 
 
 // function saveForm(profile) {

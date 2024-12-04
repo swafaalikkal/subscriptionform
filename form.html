@@ -9,12 +9,12 @@
 </head>
 <body>
     <div class="container-sm mt-5">
-        <form action="#" id="form-submission" class="was-validated" nonvalidate>
+        <form action="#" id="form-submission" class="was-validated" novalidate>
           <div class="row mb-3">
             <div class="col-md col-12">
             <label for="fname" class="form-label">First Name</label>
             <input type="text" id="fname" class="form-control" required>
-            <div class="invalid-feedback"> Please fill out this field</div>
+            <!-- <div class="invalid-feedback"> Please fill out this field</div> -->
           </div>
           <div class="col-md col-12">
             <label for="lname" class="form-label">Last Name</label>
@@ -23,12 +23,12 @@
           </div>
           <div class="mb-3">
             <label for="fullname" class="form-label">Full Name</label>
-            <input type="text" id="fullname" class="form-control" disabled>
+            <input type="text" id="fullname" class="form-control" readonly>
           </div>
             <div class="row mb-3">
               <div class="col-md col-12">
                 <label for="username" class="form-label">User Name</label>
-                <input type="text" id="username" class="form-control" required>
+                <input type="text" id="username" class="form-control" minlength="5" title="username must be atleast 5 characters long" required>
               </div>
               <div class="col-md col-12">
                 <label for="email" class="form-label">Email</label>
@@ -42,7 +42,7 @@
               </div>
               <div class="col-md col-12">
                 <label for="age" class="form-label">Age</label>
-                <input type="number" name="" id="age" class="form-control" disabled>
+                <input type="number" name="" id="age" class="form-control" readonly>
               </div>
             </div>
             <div class="mb-3">
