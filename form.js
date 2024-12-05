@@ -1,4 +1,4 @@
-const formSubmission = document.getElementById('form-submission');
+const form = document.getElementById('form-submission');
 const submitBtn = document.getElementById('submit-btn');
 const loadingBtn = document.getElementById('loading-btn')
 const fnameField = document.getElementById('fname');
@@ -10,7 +10,6 @@ const nameField = document.getElementById('fullname');
 const contactField = document.getElementById('mobile');
 const imageField = document.getElementById('picture');
 
-
 fnameField.addEventListener('change', updateName);
 lnameField.addEventListener('change', updateName);
 
@@ -19,8 +18,6 @@ function updateName() {
     const lname = lnameField.value.trim();
     nameField.value = `${fname} ${lname}`;
 }
-
-
 
 emailField.addEventListener('change',function() {
     const email = emailField.value.trim();
@@ -58,16 +55,8 @@ imageField.addEventListener('change',() => {
     }
 })
 
-
-
-formSubmission.addEventListener('submit', async (event) => {
-
+form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    
-    if(!formSubmission.checkValidity()) {
-        alert("Please fill in all required fields");
-        return;
-    }
 
     const fname = fnameField.value.trim();
     const lname = lnameField.value.trim();
@@ -78,28 +67,44 @@ formSubmission.addEventListener('submit', async (event) => {
     const age = ageField.value;
     const description = document.getElementById('description').value.trim();
     const gender = document.getElementById('gender').value;
-    const ppicture = document.getElementById('picture').files[0];
+    const profilePicture = imageField.files[0];
     const mobile = contactField.value;
+    const checkbox = document.getElementById('checkbox').checked;
     
-
-    const profile = { fname, lname, name, username, email , dob, age, description, gender, ppicture, mobile};
-    
-
+    if (!fname || !lname || !username || !email || !dob || !mobile || !gender || !checkbox) {
+        alert("Please fill all required fields.");
+        event.preventDefault();
+        return;
+    }
+        
     submitBtn.classList.add("d-none");
     loadingBtn.classList.remove("d-none");
 
+    const formData = new FormData(form);
+
+    formData.append("First Name", fname);
+    formData.append("Last Name", lname);
+    formData.append("Full Name", name);
+    formData.append("User Name", username);
+    formData.append("Email", email);
+    formData.append("Date of Birth", dob);
+    formData.append("Age", age);
+    formData.append("Description", description);
+    formData.append("Contact Number", mobile);
+    formData.append("Gender", gender);
+    if(profilePicture){
+        formData.append("Profile Picture", profilePicture.name);
+    }
+    formData.append("Newsletter Subscription", checkbox);
 
     setTimeout(() => {
         alert("Your Information is Recorded");
-        displayForm(profile);
-        formSubmission.reset();
+        displayData(formData);
+        form.reset();
         submitBtn.classList.remove("d-none");
         loadingBtn.classList.add("d-none");
     },5000);
-
-});  
-
-
+})
 
 function validateEmail(email) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -111,17 +116,12 @@ function validateMobile(mobile) {
     return mobileRegex.test(mobile);
 }
 
-function displayForm(profile) {
-    let dataDisplayed = "";
-    for (let [data , value] of Object.entries(profile)) {
-        dataDisplayed += `${data} : ${value}\n`;
+function displayData(formData) {
+    let jsonData = {};
+    for (let [key, value] of formData.entries()) {
+        console.log(key + " : " + value);
+        jsonData[key] = value; 
     }
-    console.log(dataDisplayed);
+
+    console.log("JSON Data:", JSON.stringify(jsonData, null, 2));
 }
-
-
-// function saveForm(profile) {
-//   const savedProfiles = JSON.parse(localStorage.getItem('Profiles')) || [];
-//   savedProfiles.push(profile);
-//   localStorage.setItem('Profiles', JSON.stringify(savedProfiles));
-// }
